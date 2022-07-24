@@ -97,10 +97,19 @@ app_license = "MIT"
 
 # doc_events = {
 # 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
+# 		"after_insert": [
+# 			"pos_sym.api.notify_change"
+# 		],
+# 		"on_update": [
+# 			"pos_sym.api.notify_change"
+# 		],
+# 		"on_cancel": [
+# 			"pos_sym.api.notify_change"
+# 		],
+# 		"on_trash": [
+# 			"pos_sym.api.notify_change"
+# 		]
+# 	}
 # }
 
 # Scheduled Tasks
