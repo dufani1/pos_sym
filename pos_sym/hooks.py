@@ -95,22 +95,13 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"after_insert": [
-# 			"pos_sym.api.notify_change"
-# 		],
-# 		"on_update": [
-# 			"pos_sym.api.notify_change"
-# 		],
-# 		"on_cancel": [
-# 			"pos_sym.api.notify_change"
-# 		],
-# 		"on_trash": [
-# 			"pos_sym.api.notify_change"
-# 		]
-# 	}
-# }
+doc_events = {
+	"Item": {
+		"on_update": [
+			"pos_sym.events.item.on_update"
+		]
+	}
+}
 
 # Scheduled Tasks
 # ---------------
@@ -195,3 +186,15 @@ user_data_fields = [
 # Recommended only for DocTypes which have limited documents with untranslated names
 # For example: Role, Gender, etc.
 # translated_search_doctypes = []
+
+fixtures = [
+	{
+		"doctype": "Custom Field",
+		"filters": [
+			["fieldname", "in", (
+				"sym_publish_to_local_pos"
+				)
+			]
+		]
+	}
+]
