@@ -1,0 +1,99 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-07-27 19:12:11.372511",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "pos_client",
+  "client_id",
+  "column_break_3",
+  "ref_doctype",
+  "ref_docname",
+  "section_break_6",
+  "event",
+  "data",
+  "status",
+  "create"
+ ],
+ "fields": [
+  {
+   "fieldname": "pos_client",
+   "fieldtype": "Link",
+   "label": "POS Client",
+   "options": "POS Client"
+  },
+  {
+   "fetch_from": "pos_client.client_id",
+   "fieldname": "client_id",
+   "fieldtype": "Read Only",
+   "label": "Client ID"
+  },
+  {
+   "fieldname": "ref_doctype",
+   "fieldtype": "Data",
+   "label": "Doc Type"
+  },
+  {
+   "fieldname": "ref_docname",
+   "fieldtype": "Data",
+   "label": "DocName"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Select",
+   "label": "Event",
+   "options": "\nInit\nInsert\nUpdate\nDelete"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "data",
+   "fieldtype": "Code",
+   "label": "Data",
+   "options": "JSON"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nPending\nSuccess\nRetry\nFailed"
+  },
+  {
+   "fieldname": "create",
+   "fieldtype": "Datetime",
+   "label": "Create",
+   "options": "NOW"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-07-27 19:16:55.981297",
+ "modified_by": "Administrator",
+ "module": "Pos Sym",
+ "name": "POS SYNC Backlog",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

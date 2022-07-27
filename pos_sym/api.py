@@ -1,5 +1,6 @@
 import frappe
 
+
 @frappe.whitelist(allow_guest=False, methods=["GET"]) 
 def get_customers():
     args = frappe.request.args
