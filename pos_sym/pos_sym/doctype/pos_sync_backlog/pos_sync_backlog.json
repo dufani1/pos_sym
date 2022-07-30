@@ -21,6 +21,7 @@
   {
    "fieldname": "pos_client",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "POS Client",
    "options": "POS Client"
   },
@@ -47,6 +48,7 @@
   {
    "fieldname": "event",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Event",
    "options": "\nInit\nInsert\nUpdate\nDelete"
   },
@@ -63,6 +65,7 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Status",
    "options": "\nPending\nSuccess\nRetry\nFailed"
   },
@@ -75,7 +78,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-27 19:16:55.981297",
+ "modified": "2022-07-28 09:03:08.377271",
  "modified_by": "Administrator",
  "module": "Pos Sym",
  "name": "POS SYNC Backlog",

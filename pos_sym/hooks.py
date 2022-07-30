@@ -96,12 +96,47 @@ app_license = "MIT"
 # Hook on document methods and events
 
 doc_events = {
-	"Item": {
-		"on_update": [
-			"pos_sym.events.item.on_update"
+	"*": {
+		# "after_insert": [
+		# 	"pos_sym.sym_customers.sym_doc_event"
+		# ],
+		"validate": [
+			"pos_sym.sym_customers.sym_doc_event"
+		],
+		"on_trash": [
+			"pos_sym.sym_customers.sym_doc_event"
 		]
+
 	}
 }
+
+
+	# "*": {
+	# 	"after_insert": [
+	# 		"frappe.event_streaming.doctype.event_update_log.event_update_log.notify_consumers"
+	# 	],
+	# 	"on_update": [
+	# 		"frappe.desk.notifications.clear_doctype_notifications",
+	# 		"frappe.core.doctype.activity_log.feed.update_feed",
+	# 		"frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions",
+	# 		"frappe.automation.doctype.assignment_rule.assignment_rule.apply",
+	# 		"frappe.core.doctype.file.file.attach_files_to_document",
+	# 		"frappe.event_streaming.doctype.event_update_log.event_update_log.notify_consumers",
+	# 		"frappe.automation.doctype.assignment_rule.assignment_rule.update_due_date",
+	# 		"frappe.core.doctype.user_type.user_type.apply_permissions_for_non_standard_user_type"
+	# 	],
+	# 	"after_rename": "frappe.desk.notifications.clear_doctype_notifications",
+	# 	"on_cancel": [
+	# 		"frappe.desk.notifications.clear_doctype_notifications",
+	# 		"frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions",
+	# 		"frappe.event_streaming.doctype.event_update_log.event_update_log.notify_consumers"
+	# 	],
+	# 	"on_trash": [
+	# 		"frappe.desk.notifications.clear_doctype_notifications",
+	# 		"frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions",
+	# 		"frappe.event_streaming.doctype.event_update_log.event_update_log.notify_consumers"
+	# 	],
+
 
 # Scheduled Tasks
 # ---------------

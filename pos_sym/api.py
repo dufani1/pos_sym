@@ -1,22 +1,6 @@
 import frappe
+from pos_sym.sym_prepare_pos import sym_prepare_pos
 
-
-@frappe.whitelist(allow_guest=False, methods=["GET"]) 
-def get_customers():
-    args = frappe.request.args
-    items = []
-    cond_filters = {}
-
-    if "last_update" in args:
-        cond_filters["modified"] = (">", args.get("last_update"))
-        
-    _items = frappe.get_all("Customer", fields="*", filters=cond_filters, order_by="modified asc")
-
-    for item in _items:
-        # append child tables data
-        item["tables"] = get_child_tables_data("Customer", item.get("name"))
-        items.append(item)
-    return items
 
 @frappe.whitelist(allow_guest=False, methods=["GET"]) 
 def get_items():
