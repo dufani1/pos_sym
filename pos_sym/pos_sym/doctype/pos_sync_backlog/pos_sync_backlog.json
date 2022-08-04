@@ -6,15 +6,17 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "event",
+  "column_break_2",
+  "status",
+  "section_break_3",
   "pos_client",
   "client_id",
   "column_break_3",
   "ref_doctype",
   "ref_docname",
   "section_break_6",
-  "event",
   "data",
-  "status",
   "create"
  ],
  "fields": [
@@ -34,6 +36,7 @@
   {
    "fieldname": "ref_doctype",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Doc Type"
   },
   {
@@ -74,11 +77,19 @@
    "fieldtype": "Datetime",
    "label": "Create",
    "options": "NOW"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-28 09:03:08.377271",
+ "modified": "2022-07-30 18:07:15.873220",
  "modified_by": "Administrator",
  "module": "Pos Sym",
  "name": "POS SYNC Backlog",

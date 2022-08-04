@@ -45,7 +45,7 @@ def update_customer(event_doc):
         # create update backlogs for each pos client
         for pos_client in pos_clients:
             sym_create_backlog(
-                pos_client=pos_client,
+                pos_client_orm=pos_client,
                 doctype=event_doc.doctype,
                 docname=event_doc.name,
                 data=event_doc.as_json(),
@@ -90,7 +90,7 @@ def sym_prepare_customer(pos_client_orm):
             sym_create_backlog(
                 pos_client_orm=pos_client_orm,
                 doctype=doc_orm.doctype,
-                docname="doc.name",
+                docname=doc_orm.name,
                 data=doc_orm.as_json(),
                 event_type="Init",
                 status="Pending"

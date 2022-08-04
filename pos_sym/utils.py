@@ -3,6 +3,30 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils.data import nowdate
 
+def sym_get_backlogs(pos_client):
+    # we send only Pending backlogs
+    backlogs = []
+    _backlogs = frappe.get_all(
+        "POS SYNC Backlog",
+        fields="*",
+        filters={
+            "pos_client": pos_client.name
+        },
+        order_by="modified asc"
+    )
+
+    for bl in _backlogs:
+        if bl.status == "Success":
+            continue
+        if bl.status == "Failed":
+            break
+        
+        backlogs.append(
+            bl
+        )
+    print("sending", backlogs, " _backlogs: ")
+    return backlogs
+
 def sym_get_pos_client():
     """ Get POS Client from the current request """
     client_id = frappe.form_dict["client_id"]
