@@ -2,26 +2,22 @@ import frappe
 from frappe.utils import now
 from pos_sym.utils import sym_clear_backlogs, sym_create_backlog, sym_get_pos_clients
 
-EVENT_DOCS = [
-    "Customer"
-]
+CONTROLLER_DOCTYPE = "POS Profile"
 
-
-def sym_doc_event(event_doc, event_name):
-    print("sym_doc_event: ", event_name, " doc: ", event_doc.doctype)
-    if event_doc.doctype in EVENT_DOCS:
+def doc_event(event_doc, event_name):
+    if event_doc.doctype == CONTROLLER_DOCTYPE:
         if event_name == "validate":
             if not frappe.db.exists(event_doc.doctype, event_doc.name):
                 # create doc
-                create_customer(event_doc)
+                create_insert_backlog(event_doc)
             else:
                 # update doc
-                update_customer(event_doc)
+                create_update_backlog(event_doc)
         elif event_name == "on_trash":
             # trash doc
-            delete_customer(event_doc)
+            create_delete_backlog(event_doc)
 
-def create_customer(event_doc):
+def create_insert_backlog(event_doc):
     # get pos clients
     pos_clients = sym_get_pos_clients()
      
@@ -30,14 +26,14 @@ def create_customer(event_doc):
         for pos_client in pos_clients:
             sym_create_backlog(
                 pos_client=pos_client,
-                doctype=event_doc.doctype,
+                doctype=CONTROLLER_DOCTYPE,
                 docname=event_doc.name,
                 data=event_doc.as_json(),
                 event_type="Insert",
                 status="Pending"
             )    
 
-def update_customer(event_doc):
+def create_update_backlog(event_doc):
     # get pos clients
     pos_clients = sym_get_pos_clients()
             
@@ -46,14 +42,14 @@ def update_customer(event_doc):
         for pos_client in pos_clients:
             sym_create_backlog(
                 pos_client_orm=pos_client,
-                doctype=event_doc.doctype,
+                doctype=CONTROLLER_DOCTYPE,
                 docname=event_doc.name,
                 data=event_doc.as_json(),
                 event_type="Update",
                 status="Pending"
             )
 
-def delete_customer(event_doc):
+def create_delete_backlog(event_doc):
     # get pos clients
     pos_clients = sym_get_pos_clients()
             
@@ -62,7 +58,7 @@ def delete_customer(event_doc):
         for pos_client in pos_clients:
             sym_create_backlog(
                 pos_client=pos_client,
-                doctype=event_doc.doctype,
+                doctype=CONTROLLER_DOCTYPE,
                 docname=event_doc.name,
                 data=event_doc.as_json(),
                 event_type="Delete",
@@ -70,22 +66,19 @@ def delete_customer(event_doc):
             )    
 
 
-def sym_prepare_customer(pos_client_orm):
+def prepare(pos_client_orm):
     try:
         cond_filters = {}
 
-        # clear previus client logs
-        sym_clear_backlogs(pos_client_orm.name)
-        
         _entries = frappe.get_all(
-            "Customer",
+            CONTROLLER_DOCTYPE,
             fields=["name"],
             filters=cond_filters,
             order_by="modified asc"
         )
 
         for entry in _entries:
-            doc_orm = frappe.get_doc("Customer", entry.name)
+            doc_orm = frappe.get_doc(CONTROLLER_DOCTYPE, entry.name)
 
             sym_create_backlog(
                 pos_client_orm=pos_client_orm,
@@ -99,25 +92,3 @@ def sym_prepare_customer(pos_client_orm):
     except Exception as e:
         print(e)
 
-
-
-def validate_pos_client_criterias(event_doc, pos_client):
-    """ Check if customer is in POS Profile Customer Groups Table """
-    for pos_profile in pos_client.profiles:
-        
-        # check if current customer is in pos profile customer_groups
-        customer_groups_table = frappe.get_all(
-            "POS Customer Group",
-            fields=["customer_group"],
-            filters={
-                "parent": pos_profile.pos_profile
-            }
-        )
-        # if empty create backlog
-        if len(customer_groups_table) == 0:
-            return True
-            break
-        # else check the value exist in one of the table rows
-        elif any(d["customer_group"] == event_doc.get("customer_group") for d in customer_groups_table):
-            return True
-            break

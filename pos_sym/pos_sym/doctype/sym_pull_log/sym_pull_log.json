@@ -1,18 +1,20 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-07-27 19:12:11.372511",
+ "creation": "2022-08-05 15:25:37.715078",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "syc_backlog_name",
+  "section_break_2",
   "event",
   "column_break_2",
   "status",
-  "section_break_3",
+  "section_break_4",
   "pos_client",
   "client_id",
-  "column_break_3",
+  "column_break_9",
   "ref_doctype",
   "ref_docname",
   "section_break_6",
@@ -21,17 +23,30 @@
  ],
  "fields": [
   {
-   "fieldname": "pos_client",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "POS Client",
-   "options": "POS Client"
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break"
   },
   {
-   "fetch_from": "pos_client.client_id",
-   "fieldname": "client_id",
-   "fieldtype": "Read Only",
-   "label": "Client ID"
+   "fieldname": "event",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Event",
+   "options": "\nInit\nInsert\nUpdate\nDelete"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "\nPending\nSuccess\nFailed"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "ref_doctype",
@@ -42,18 +57,7 @@
   {
    "fieldname": "ref_docname",
    "fieldtype": "Data",
-   "label": "DocName"
-  },
-  {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "event",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Event",
-   "options": "\nInit\nInsert\nUpdate\nDelete"
+   "label": "Doc Name"
   },
   {
    "fieldname": "section_break_6",
@@ -66,33 +70,41 @@
    "options": "JSON"
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Status",
-   "options": "\nPending\nSuccess\nRetry\nFailed"
-  },
-  {
    "fieldname": "create",
    "fieldtype": "Datetime",
    "label": "Create",
    "options": "NOW"
   },
   {
-   "fieldname": "section_break_3",
-   "fieldtype": "Section Break"
+   "fieldname": "pos_client",
+   "fieldtype": "Link",
+   "label": "POS Client",
+   "options": "POS Client"
   },
   {
-   "fieldname": "column_break_2",
+   "fetch_from": "pos_client.client_id",
+   "fieldname": "client_id",
+   "fieldtype": "Data",
+   "label": "Client ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_9",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "syc_backlog_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "SYC Backlog Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-30 18:07:15.873220",
+ "modified": "2022-08-05 17:29:10.674049",
  "modified_by": "Administrator",
  "module": "Pos Sym",
- "name": "POS SYNC Backlog",
+ "name": "SYM Pull Log",
  "owner": "Administrator",
  "permissions": [
   {

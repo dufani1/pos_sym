@@ -7,7 +7,7 @@ def sym_get_backlogs(pos_client):
     # we send only Pending backlogs
     backlogs = []
     _backlogs = frappe.get_all(
-        "POS SYNC Backlog",
+        "SYM Backlog",
         fields="*",
         filters={
             "pos_client": pos_client.name
@@ -24,7 +24,6 @@ def sym_get_backlogs(pos_client):
         backlogs.append(
             bl
         )
-    print("sending", backlogs, " _backlogs: ")
     return backlogs
 
 def sym_get_pos_client():
@@ -62,7 +61,7 @@ def sym_get_pos_clients() -> "list[Document]":
 def sym_create_backlog(pos_client_orm, doctype, docname, data, event_type, status="Pending"):
     new_backlog = frappe.get_doc(
         {
-            "doctype": "POS SYNC Backlog",
+            "doctype": "SYM Backlog",
             "pos_client": pos_client_orm.name,
             "client_id": pos_client_orm.client_id,
             "ref_doctype": doctype,
@@ -70,7 +69,7 @@ def sym_create_backlog(pos_client_orm, doctype, docname, data, event_type, statu
             "data": data,
             "event": event_type,
             "status": status,
-            "date": nowdate()
+            "create": nowdate()
         }
     )
 
@@ -80,17 +79,65 @@ def sym_clear_backlogs(pos_client_name):
 
     # TODO: delete records using sql
     _entries = frappe.get_all(
-        "POS SYNC Backlog",
-        fields=["name"]
+        "SYM Backlog",
+        fields=["name"],
+        filters={
+            "pos_client": pos_client_name
+        }
     )
     for entry in _entries:
         frappe.db.delete(
-            "POS SYNC Backlog",
+            "SYM Backlog",
             filters={
-                "name": entry.name,
-                "pos_client": pos_client_name
+                "name": entry.name
             }
         )
+
+def sym_clear_pull_logs(pos_client_name):
+
+    # TODO: delete records using sql
+    _entries = frappe.get_all(
+        "SYM Pull Log",
+        fields=["name"],
+        filters={
+            "pos_client": pos_client_name
+        }
+    )
+    for entry in _entries:
+        frappe.db.delete(
+            "SYM Pull Log",
+            filters={
+                "name": entry.name
+            }
+        )
+    
+def sym_create_pull_log(pos_client_orm, syc_backlog_name, event_type, status, doctype=None, docname=None, data=None):
+    try:
+        pull_log_exist = frappe.get_all(
+            "SYM Pull Log",
+            filters={
+                "syc_backlog_name": syc_backlog_name
+            }
+        )
+        if len(pull_log_exist) == 0:
+            new_backlog = frappe.get_doc(
+                {
+                    "doctype": "SYM Pull Log",
+                    "syc_backlog_name": syc_backlog_name,
+                    "pos_client": pos_client_orm.name,
+                    "client_id": pos_client_orm.client_id,
+                    "event": event_type,
+                    "status": status,
+                    "ref_doctype": doctype,
+                    "ref_docname": docname,
+                    "data": data,
+                    "create": nowdate()
+                }
+            )
+
+            new_backlog.insert()
+    except Exception as e:
+        print("SYC Error", e)
 
 # def get_child_tables_data(doctype_dict):
 #     meta = frappe.get_meta(doctype_dict["doctype"])
@@ -123,7 +170,7 @@ def sym_clear_backlogs(pos_client_name):
     
 #     new_backlog = frappe.get_doc(
 #         {
-#             "doctype": "POS SYNC Backlog",
+#             "doctype": "SYM Backlog",
 #             "pos_client": 
 #         }
 #     )

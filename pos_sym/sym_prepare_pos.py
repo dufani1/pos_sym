@@ -1,10 +1,10 @@
 import frappe
 from frappe import enqueue
 from frappe.utils.data import nowdate
-from pos_sym.sym_customers import sym_prepare_customer
+from pos_sym.sym_controllers.customer_controller import sym_prepare_customer
 from pos_sym.utils import sym_clear_backlogs, sym_get_pos_client
 
-REQD_DOC_CONTROLLERS = [
+PREPARE_CONTROLLERS = [
     sym_prepare_customer
 ]
 
@@ -29,8 +29,9 @@ def _prepare():
 
         pos_client_orm.save()
 
-        # Prepare Customers
-        sym_prepare_customer(pos_client_orm)
+        # Prepare Controllers
+        for prepare_ctl in PREPARE_CONTROLLERS:
+            prepare_ctl(pos_client_orm)
 
     except Exception as e:
         print(e)
@@ -41,15 +42,14 @@ def revoke():
     try:
         # pos_client_name = sym_get_pos_client().name
         # frappe.enqueue(_prepare, queue="long", is_async=True, job_name=f"SYM Prepare POS, POS Client: {pos_client_name}")
-        revoke()
+        _revoke()
 
         return True
     except Exception as e:
         print(e)
         return False
 
-@frappe.whitelist(allow_guest=False, methods=["POST"])
-def revoke():
+def _revoke():
     try:
         # Revoke all POS Client preparations
         pos_client_orm = sym_get_pos_client()

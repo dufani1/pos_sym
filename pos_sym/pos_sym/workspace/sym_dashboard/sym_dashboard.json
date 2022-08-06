@@ -13,7 +13,7 @@
  "is_standard": 1,
  "label": "SYM Dashboard",
  "links": [],
- "modified": "2022-07-28 09:11:45.212003",
+ "modified": "2022-08-05 15:28:34.872648",
  "modified_by": "Administrator",
  "module": "Pos Sym",
  "name": "SYM Dashboard",
@@ -23,14 +23,20 @@
  "shortcuts": [
   {
    "doc_view": "List",
-   "label": "POS Clients",
-   "link_to": "POS Client",
+   "label": "SYM Backlog",
+   "link_to": "SYM Backlog",
    "type": "DocType"
   },
   {
    "doc_view": "List",
-   "label": "POS SYNC Backlogs",
-   "link_to": "POS SYNC Backlog",
+   "label": "SYM Pull Log",
+   "link_to": "SYM Pull Log",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "POS Clients",
+   "link_to": "POS Client",
    "type": "DocType"
   }
  ]

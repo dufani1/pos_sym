@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestPOSSYNCBacklog(unittest.TestCase):
+class TestSYMBacklog(unittest.TestCase):
 	pass

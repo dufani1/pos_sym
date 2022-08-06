@@ -101,10 +101,10 @@ doc_events = {
 		# 	"pos_sym.sym_customers.sym_doc_event"
 		# ],
 		"validate": [
-			"pos_sym.sym_customers.sym_doc_event"
+			"pos_sym.api.sym_doc_event",
 		],
 		"on_trash": [
-			"pos_sym.sym_customers.sym_doc_event"
+			"pos_sym.api.sym_doc_event"
 		]
 
 	}
