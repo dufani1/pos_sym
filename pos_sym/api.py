@@ -59,44 +59,85 @@ def sym_eval_pull_logs():
             print(f"Skiping: {plog.name}")
             continue
 
-        if plog.status == "Failed":
-            print(f"Breaking due to: {plog.name}")
-            break
-
         if plog.event == "Init" or plog.event == "Insert":
             try:
                 
                 parsed_log_data = frappe.parse_json(plog.data)
                 parsed_log_data["doctype"] = plog.ref_doctype
                 
-                frappe.delete_doc_if_exists(doctype=plog.ref_doctype, name=plog.ref_docname, force=True)
+                frappe.delete_doc_if_exists(doctype=plog.ref_doctype, name=plog.ref_docname, force=False)
 
                 new_insert = frappe.get_doc(parsed_log_data) 
-                new_insert.insert()
+                new_insert.insert(ignore_links=True, ignore_mandatory=True)
+
                 frappe.db.set_value("SYM Pull Log", dn=plog.name, field="status", val="Success", update_modified=False)
                 
                 success_pull_logs.append(plog.syc_backlog_name)
 
             except Exception as e:
-                frappe.db.set_value("SYM Pull Log", dn=plog.name, field="status", val="Failed", update_modified=False)
                 print(e)
+                frappe.db.set_value(
+                    "SYM Pull Log",
+                    dn=plog.name,
+                    field={
+                        "status": "Failed",
+                        "fail_reason": frappe.get_traceback()
+                    },
+                update_modified=False
+                )
+                frappe.msgprint(f"SYC: Failed to Eval Pull Log: {plog.name}")
+                break
+
         elif plog.event == "Update":
             try:
                 parsed_log_data = frappe.parse_json(plog.data)
                 parsed_log_data["doctype"] = plog.ref_doctype
                 
-                frappe.delete_doc_if_exists(doctype=plog.ref_doctype, name=plog.ref_docname, force=True)
+                frappe.delete_doc_if_exists(doctype=plog.ref_doctype, name=plog.ref_docname, force=False)
 
                 new_insert = frappe.get_doc(parsed_log_data) 
-                new_insert.insert()
+                new_insert.insert(ignore_links=True, ignore_mandatory=True)
                 
                 frappe.db.set_value("SYM Pull Log", dn=plog.name, field="status", val="Success", update_modified=False)
 
                 success_pull_logs.append(plog.syc_backlog_name)
 
             except Exception as e:
-                frappe.db.set_value("SYM Pull Log", dn=plog.name, field="status", val="Failed", update_modified=False)
-                print(e)
+                frappe.db.set_value(
+                    "SYM Pull Log",
+                    dn=plog.name,
+                    field={
+                        "status": "Failed",
+                        "fail_reason": frappe.get_traceback()
+                    },
+                update_modified=False
+                )
+                frappe.msgprint(f"SYC: Failed to Eval Pull Log: {plog.name}")
+                break
+
+        elif plog.event == "Delete":
+            try:
+                parsed_log_data = frappe.parse_json(plog.data)
+                parsed_log_data["doctype"] = plog.ref_doctype
+                
+                frappe.delete_doc_if_exists(doctype=plog.ref_doctype, name=plog.ref_docname, force=False)
+                
+                frappe.db.set_value("SYM Pull Log", dn=plog.name, field="status", val="Success", update_modified=False)
+
+                success_pull_logs.append(plog.syc_backlog_name)
+
+            except Exception as e:
+                frappe.db.set_value(
+                    "SYM Pull Log",
+                    dn=plog.name,
+                    field={
+                        "status": "Failed",
+                        "fail_reason": frappe.get_traceback()
+                    },
+                update_modified=False
+                )
+                frappe.msgprint(f"SYC: Failed to Eval Pull Log: {plog.name}")
+                break
 
     return success_pull_logs
 
@@ -176,7 +217,6 @@ def _revoke():
 
 @frappe.whitelist(allow_guest=False, methods=["POST"]) 
 def sym_confirm_backlogs():
-
     """ confirm received success pull logs from syc """
     success_pull_logs = frappe.form_dict["success_pull_logs"]
 

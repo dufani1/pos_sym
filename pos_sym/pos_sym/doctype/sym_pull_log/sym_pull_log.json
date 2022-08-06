@@ -19,6 +19,7 @@
   "ref_docname",
   "section_break_6",
   "data",
+  "fail_reason",
   "create"
  ],
  "fields": [
@@ -97,11 +98,17 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "SYC Backlog Name"
+  },
+  {
+   "fieldname": "fail_reason",
+   "fieldtype": "Long Text",
+   "label": "Fail Reason",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-05 17:29:10.674049",
+ "modified": "2022-08-06 11:39:44.572780",
  "modified_by": "Administrator",
  "module": "Pos Sym",
  "name": "SYM Pull Log",
