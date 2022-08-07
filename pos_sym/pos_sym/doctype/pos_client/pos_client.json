@@ -47,6 +47,7 @@
    "default": "0",
    "fieldname": "is_prepared",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "Is Prepared",
    "read_only": 1
   },
@@ -60,7 +61,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-30 14:35:03.565415",
+ "modified": "2022-08-07 09:57:21.111289",
  "modified_by": "Administrator",
  "module": "Pos Sym",
  "name": "POS Client",
